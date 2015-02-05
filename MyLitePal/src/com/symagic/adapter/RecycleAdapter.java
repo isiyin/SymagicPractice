@@ -66,6 +66,7 @@ public class RecycleAdapter extends
 		LayoutParams params = view.getLayoutParams();
 		params.width = LayoutParams.MATCH_PARENT;
 		params.height = (int) (dm.widthPixels / 3.0 * 2.0);
+		
 		view.setLayoutParams(params);
 		return new ViewHolder(view);
 	}
