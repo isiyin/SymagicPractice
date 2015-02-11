@@ -1,5 +1,6 @@
 package com.symagic.mylitepal;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +17,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.Toast;
 
 import com.example.mylitepal.R;
 import com.symagic.adapter.RecycleAdapter;
 import com.symagic.bean.Photo;
-import com.symagic.views.RippleView;
 
 public class MateriaDesignActivity extends FragmentActivity {
 	private RecyclerView contentRC;
@@ -39,6 +40,7 @@ public class MateriaDesignActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_materia_design);
+//		setOverflowShowingAlways();
 		android.app.ActionBar bar = getActionBar();
 		bar.setTitle("MateriaDesign");
 		bar.setIcon(R.drawable.icon);
@@ -95,25 +97,30 @@ public class MateriaDesignActivity extends FragmentActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			Toast.makeText(MateriaDesignActivity.this, "back click",
-					Toast.LENGTH_SHORT).show();
-			// finish();
-			break;
-
-		default:
-			break;
-		}
-		return true;
-	}
+	// @Override
+	// public boolean onOptionsItemSelected(MenuItem item) {
+	// switch (item.getItemId()) {
+	// case android.R.id.home:
+	// Toast.makeText(MateriaDesignActivity.this,
+	// "back click click click click",
+	// Toast.LENGTH_SHORT).show();
+	// // finish();
+	// break;
+	// default:
+	// break;
+	// }
+	// return true;
+	// }
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		menuItem = item;
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			Toast.makeText(MateriaDesignActivity.this, "menu back click",
+					Toast.LENGTH_SHORT).show();
+			// finish();
+			return false;
 		case R.id.action_search:
 			if (isClick) {
 				hideSerch();
@@ -172,4 +179,20 @@ public class MateriaDesignActivity extends FragmentActivity {
 		isClick = false;
 		menuItem.setIcon(R.drawable.search);
 	}
+
+	/**
+	 * 让物理Menu键默认为没有， 就是使用反射的方式将sHasPermanentMenuKey的值设置成false
+	 */
+	private void setOverflowShowingAlways() {
+		try {
+			ViewConfiguration config = ViewConfiguration.get(this);
+			Field menuKeyField = ViewConfiguration.class
+					.getDeclaredField("sHasPermanentMenuKey");
+			menuKeyField.setAccessible(true);
+			menuKeyField.setBoolean(config, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
